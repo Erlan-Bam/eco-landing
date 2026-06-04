@@ -13,7 +13,8 @@
     "check": "astro check",
     "verify:data": "node scripts/verify-data.mjs",
     "verify:helpers": "node scripts/verify-site-helpers.mjs",
-    "verify": "npm run verify:data && npm run verify:helpers && npm run check"
+    "verify:build": "node scripts/verify-build-output.mjs",
+    "verify": "npm run verify:data && npm run verify:helpers && npm run check && npm run build && npm run verify:build"
   },
   "dependencies": {
     "@astrojs/react": "^5.0.7",
