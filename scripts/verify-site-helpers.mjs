@@ -17,8 +17,17 @@ import {
 
 const puo = services.find((service) => service.id === "puo");
 const szz = services.find((service) => service.id === "szz");
+const originalSiteUrl = process.env.PUBLIC_SITE_URL;
 
 assert.equal(getSiteUrl(), "http://localhost:4321");
+process.env.PUBLIC_SITE_URL = "https://example.com///";
+assert.equal(getSiteUrl(), "https://example.com");
+if (originalSiteUrl === undefined) {
+  delete process.env.PUBLIC_SITE_URL;
+} else {
+  process.env.PUBLIC_SITE_URL = originalSiteUrl;
+}
+
 assert.deepEqual(pages, ["home", "services"]);
 
 assert.equal(getRoute("ru", "home"), "/");
@@ -26,6 +35,8 @@ assert.equal(getRoute("kz", "home"), "/kz/");
 assert.equal(getRoute("ru", "services"), "/services/");
 assert.equal(getRoute("kz", "services"), "/kz/services/");
 assert.equal(localizePath("kz", "services"), "/kz/services/");
+assert.throws(() => getRoute("en", "home"), /Unknown locale/);
+assert.throws(() => getRoute("ru", "missing"), /Unknown page/);
 
 assert.equal(canonicalUrl("/services/"), "http://localhost:4321/services/");
 assert.deepEqual(getAlternateLinks("services"), [
