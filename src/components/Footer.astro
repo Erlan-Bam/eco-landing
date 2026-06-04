@@ -1,0 +1,48 @@
+---
+import { company } from "../data/company.mjs";
+import { getRoute, getWhatsAppUrl } from "../utils/site.mjs";
+
+interface Props {
+  locale: "ru" | "kz";
+}
+
+const { locale } = Astro.props;
+const labels = locale === "kz"
+  ? {
+      contact: "Байланыс",
+      schedule: "Жұмыс уақыты",
+      address: "Мекенжай",
+      services: "Қызметтер",
+      home: "Басты бет",
+      bin: "БСН"
+    }
+  : {
+      contact: "Контакты",
+      schedule: "График",
+      address: "Адрес",
+      services: "Услуги",
+      home: "Главная",
+      bin: "БИН"
+    };
+---
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <a class="wordmark" href={getRoute(locale, "home")}>{company.brand[locale]}</a>
+      <p class="muted">{company.legalName[locale]}</p>
+      <p class="muted">{labels.bin} {company.bin}</p>
+    </div>
+
+    <div>
+      <p><strong>{labels.contact}</strong></p>
+      <p><a href={`tel:${company.primaryPhone.tel}`}>{company.primaryPhone.display}</a> · <a href={getWhatsAppUrl(locale)}>WhatsApp</a></p>
+      <p><strong>{labels.schedule}:</strong> {company.schedule[locale]}</p>
+      <p><strong>{labels.address}:</strong> {company.address[locale]}</p>
+      <div class="footer-links">
+        <a href={getRoute(locale, "home")}>{labels.home}</a>
+        <a href={getRoute(locale, "services")}>{labels.services}</a>
+      </div>
+    </div>
+  </div>
+</footer>

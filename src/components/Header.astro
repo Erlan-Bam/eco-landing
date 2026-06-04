@@ -1,0 +1,62 @@
+---
+import { company } from "../data/company.mjs";
+import { getRoute, getWhatsAppUrl } from "../utils/site.mjs";
+
+interface Props {
+  locale: "ru" | "kz";
+  nav: {
+    services: string;
+    prices: string;
+    process: string;
+    about: string;
+    faq: string;
+    contacts: string;
+    whatsapp: string;
+  };
+  page: "home" | "services";
+}
+
+const { locale, nav, page } = Astro.props;
+const otherLocale = locale === "kz" ? "ru" : "kz";
+const navItems = [
+  { label: nav.services, href: getRoute(locale, "services") },
+  { label: nav.prices, href: `${getRoute(locale, "home")}#prices` },
+  { label: nav.process, href: `${getRoute(locale, "home")}#process` },
+  { label: nav.about, href: `${getRoute(locale, "home")}#about` },
+  { label: nav.faq, href: `${getRoute(locale, "home")}#faq` },
+  { label: nav.contacts, href: `${getRoute(locale, "home")}#contacts` }
+];
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="wordmark" href={getRoute(locale, "home")} aria-label={company.brand[locale]}>
+      {company.brand[locale]}
+    </a>
+
+    <nav class="desktop-nav" aria-label={locale === "kz" ? "Негізгі навигация" : "Основная навигация"}>
+      <ul class="nav-list">
+        {navItems.map((item) => (
+          <li><a class="nav-link" href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <div class="lang-switch" aria-label="Language">
+        {locale === "ru" ? <span>RU</span> : <a href={getRoute("ru", page)}>RU</a>}
+        {locale === "kz" ? <span>KZ</span> : <a href={getRoute("kz", page)}>KZ</a>}
+      </div>
+      <a class="button button-primary" href={getWhatsAppUrl(locale)}>{nav.whatsapp}</a>
+    </div>
+
+    <details class="mobile-menu">
+      <summary>{locale === "kz" ? "Мәзір" : "Меню"}</summary>
+      <div class="mobile-panel">
+        {navItems.map((item) => <a class="nav-link" href={item.href}>{item.label}</a>)}
+        <a class="nav-link" href={getRoute(otherLocale, page)}>{otherLocale === "kz" ? "KZ" : "RU"}</a>
+        <a class="button button-primary" href={getWhatsAppUrl(locale)}>{nav.whatsapp}</a>
+      </div>
+    </details>
+  </div>
+</header>
