@@ -58,11 +58,23 @@ for (const expected of ["25 000 ₸ бастап", "100 000 ₸ бастап", "
 }
 
 const sitemap = readDist("sitemap.xml");
-for (const loc of ["/", "/services/", "/kz/", "/kz/services/"]) {
-  assert.match(sitemap, new RegExp(`<loc>${publicOrigin}${loc}</loc>`));
+const sitemapBlocks = sitemap.match(/<url>[\s\S]*?<\/url>/g) ?? [];
+const sitemapExpectations = [
+  { loc: "/", ru: "/", kk: "/kz/" },
+  { loc: "/kz/", ru: "/", kk: "/kz/" },
+  { loc: "/services/", ru: "/services/", kk: "/kz/services/" },
+  { loc: "/kz/services/", ru: "/services/", kk: "/kz/services/" }
+];
+
+assert.equal(sitemapBlocks.length, sitemapExpectations.length);
+
+for (const expected of sitemapExpectations) {
+  const block = sitemapBlocks.find((entry) => entry.includes(`<loc>${publicOrigin}${expected.loc}</loc>`));
+
+  assert.ok(block, `Missing sitemap URL entry: ${expected.loc}`);
+  assert.match(block, new RegExp(`hreflang="ru" href="${publicOrigin}${expected.ru}"`));
+  assert.match(block, new RegExp(`hreflang="kk" href="${publicOrigin}${expected.kk}"`));
 }
-assert.match(sitemap, /hreflang="ru"/);
-assert.match(sitemap, /hreflang="kk"/);
 
 const robots = readDist("robots.txt");
 assert.match(robots, /User-agent: \*/);
