@@ -100,13 +100,13 @@ const labels = locale === "kz"
         <p class="eyebrow">{content[locale].nav.process}</p>
         <h2>{home.processTitle}</h2>
       </div>
-      <div class="steps">
+      <ol class="steps">
         {home.process.map((step) => (
-          <article class="step">
+          <li class="step">
             <p>{step}</p>
-          </article>
+          </li>
         ))}
-      </div>
+      </ol>
     </div>
   </section>
 

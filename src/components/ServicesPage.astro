@@ -1,0 +1,57 @@
+---
+import { content } from "../data/content.mjs";
+import { serviceCategories, services } from "../data/services.mjs";
+import { formatPrice, getWhatsAppUrl } from "../utils/site.mjs";
+
+interface Props {
+  locale: "ru" | "kz";
+}
+
+const { locale } = Astro.props;
+const page = content[locale].servicesPage;
+const categoryLabel = locale === "kz" ? "Қызмет санаттары" : "Категории услуг";
+---
+
+<main id="main-content">
+  <section class="services-hero">
+    <div class="container stack-lg">
+      <p class="eyebrow">{page.eyebrow}</p>
+      <h1>{page.title}</h1>
+      <p class="lead">{page.lead}</p>
+      <a class="button button-primary" href={getWhatsAppUrl(locale)}>WhatsApp</a>
+      <nav class="category-tabs" aria-label={categoryLabel}>
+        {serviceCategories.map((category) => (
+          <a class="button button-secondary" href={`#${category.id}`}>{category.title[locale]}</a>
+        ))}
+      </nav>
+    </div>
+  </section>
+
+  <section class="section section-tight">
+    <div class="container stack-lg">
+      {serviceCategories.map((category) => {
+        const categoryServices = services.filter((service) => service.categoryId === category.id);
+
+        return (
+          <section class="service-group" id={category.id}>
+            <div class="section-heading">
+              <h2>{category.title[locale]}</h2>
+            </div>
+            <div class="service-list">
+              {categoryServices.map((service) => (
+                <article class="service-row">
+                  <div>
+                    <h3>{service.title[locale]}</h3>
+                    <p class="muted">{service.summary[locale]}</p>
+                  </div>
+                  <p class="service-price">{formatPrice(service, locale)}</p>
+                  <a class="button button-secondary" href={getWhatsAppUrl(locale)}>{page.cta}</a>
+                </article>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  </section>
+</main>
