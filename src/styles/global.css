@@ -433,7 +433,10 @@ h3 {
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 1rem;
+  margin: 0;
+  padding: 0;
   counter-reset: step;
+  list-style: none;
 }
 
 .step {
