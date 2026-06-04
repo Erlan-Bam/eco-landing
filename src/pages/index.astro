@@ -1,14 +1,8 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import LandingPage from "../components/LandingPage.astro";
 ---
 
 <BaseLayout locale="ru" page="home">
-  <main id="main-content" class="section">
-    <div class="container stack-lg">
-      <p class="eyebrow">Тестовая страница</p>
-      <h1>Центр экологического мониторинга</h1>
-      <p class="lead">Эта временная страница проверяет общий layout, шрифт, шапку и подвал.</p>
-      <a class="button button-primary" href="https://wa.me/77077924445">WhatsApp</a>
-    </div>
-  </main>
+  <LandingPage locale="ru" />
 </BaseLayout>

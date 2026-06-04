@@ -1,0 +1,174 @@
+---
+import { company } from "../data/company.mjs";
+import { content } from "../data/content.mjs";
+import { featuredServices } from "../data/services.mjs";
+import { formatPrice, getRoute, getWhatsAppUrl } from "../utils/site.mjs";
+
+interface Props {
+  locale: "ru" | "kz";
+}
+
+const { locale } = Astro.props;
+const home = content[locale].home;
+const faq = content[locale].faq;
+
+const labels = locale === "kz"
+  ? {
+      directions: "Бағыттар",
+      prices: "Бағалар",
+      about: "Компания",
+      faq: "Сұрақ-жауап",
+      contacts: "Байланыс",
+      phone: "Телефон",
+      address: "Мекенжай",
+      schedule: "Жұмыс уақыты",
+      geography: "География",
+      whatsapp: "WhatsApp-қа жазу",
+      legalName: "Заңды атауы"
+    }
+  : {
+      directions: "Направления",
+      prices: "Цены",
+      about: "О компании",
+      faq: "FAQ",
+      contacts: "Контакты",
+      phone: "Телефон",
+      address: "Адрес",
+      schedule: "График",
+      geography: "География",
+      whatsapp: "Написать в WhatsApp",
+      legalName: "Юридическое название"
+    };
+---
+
+<main id="main-content">
+  <section class="hero">
+    <div class="container">
+      <p class="eyebrow">{home.hero.eyebrow}</p>
+      <h1>{home.hero.title}</h1>
+      <p class="lead">{home.hero.lead}</p>
+      <div class="hero-actions">
+        <a class="button button-primary" href={getWhatsAppUrl(locale)}>{home.hero.primaryCta}</a>
+        <a class="button button-secondary" href={getRoute(locale, "services")}>{home.hero.secondaryCta}</a>
+      </div>
+      <div class="chip-row" aria-label={labels.about}>
+        {home.trustChips.map((chip) => <span class="chip">{chip}</span>)}
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{labels.directions}</p>
+        <h2>{home.directionsTitle}</h2>
+      </div>
+      <div class="grid grid-5">
+        {home.directions.map((direction) => (
+          <article class="card">
+            <h3>{direction.title}</h3>
+            <p>{direction.text}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="prices" class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{labels.prices}</p>
+        <h2>{home.pricesTitle}</h2>
+        <p class="lead">{home.pricesLead}</p>
+      </div>
+      <div class="grid grid-3">
+        {featuredServices.map((service) => (
+          <article class="price-card">
+            <h3>{service.title[locale]}</h3>
+            <p>{service.summary[locale]}</p>
+            <strong class="price">{formatPrice(service, locale)}</strong>
+          </article>
+        ))}
+      </div>
+      <a class="button button-secondary cta-spaced" href={getRoute(locale, "services")}>{home.allServicesCta}</a>
+    </div>
+  </section>
+
+  <section id="process" class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{content[locale].nav.process}</p>
+        <h2>{home.processTitle}</h2>
+      </div>
+      <div class="steps">
+        {home.process.map((step) => (
+          <article class="step">
+            <p>{step}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="section">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">{labels.about}</p>
+        <h2>{home.aboutTitle}</h2>
+        <p class="lead">{home.aboutText}</p>
+        <p>{home.aboutProof}</p>
+      </div>
+      <aside class="card" aria-label={labels.legalName}>
+        <h3>{labels.legalName}</h3>
+        <p>{company.legalName[locale]}</p>
+        <p>{locale === "kz" ? "БСН" : "БИН"} {company.bin}</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="faq" class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">{labels.faq}</p>
+        <h2>{content[locale].nav.faq}</h2>
+      </div>
+      <div class="faq-list">
+        {faq.map((item) => (
+          <details>
+            <summary>{item.q}</summary>
+            <p>{item.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="contacts" class="section contact-band">
+    <div class="container split">
+      <div>
+        <p class="eyebrow">{labels.contacts}</p>
+        <h2>{home.contactTitle}</h2>
+        <p class="lead">{home.contactLead}</p>
+        <a class="button button-primary cta-spaced" href={getWhatsAppUrl(locale)}>{labels.whatsapp}</a>
+      </div>
+      <dl>
+        <div>
+          <dt>{labels.phone}</dt>
+          <dd><a href={`tel:${company.primaryPhone.tel}`}>{company.primaryPhone.display}</a></dd>
+        </div>
+        <div>
+          <dt>{labels.address}</dt>
+          <dd>{company.address[locale]}</dd>
+        </div>
+        <div>
+          <dt>{labels.schedule}</dt>
+          <dd>{company.schedule[locale]}</dd>
+        </div>
+        <div>
+          <dt>{labels.geography}</dt>
+          <dd>{company.geography[locale]}</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+</main>
