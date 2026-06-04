@@ -12,6 +12,7 @@
     "astro": "astro",
     "check": "astro check",
     "verify:data": "node scripts/verify-data.mjs",
+    "verify:helpers": "node scripts/verify-site-helpers.mjs",
     "verify": "npm run verify:data && npm run check"
   },
   "dependencies": {
