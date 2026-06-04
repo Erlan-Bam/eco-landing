@@ -3,7 +3,7 @@ import "../styles/global.css";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { content } from "../data/content.mjs";
-import { canonicalUrl, getAlternateLinks, getOrganizationJsonLd, getPageMeta, getRoute } from "../utils/site.mjs";
+import { canonicalUrl, getAlternateLinks, getOrganizationJsonLd, getPageMeta, getRoute, hasConfiguredSiteUrl } from "../utils/site.mjs";
 
 interface Props {
   locale?: "ru" | "kz";
@@ -14,8 +14,9 @@ const { locale = "ru", page = "home" } = Astro.props;
 const lang = locale === "kz" ? "kk" : "ru";
 const meta = getPageMeta(locale, page);
 const pathname = getRoute(locale, page);
-const alternates = getAlternateLinks(page);
-const jsonLd = getOrganizationJsonLd(locale);
+const hasPublicSiteUrl = hasConfiguredSiteUrl();
+const alternates = hasPublicSiteUrl ? getAlternateLinks(page) : [];
+const jsonLd = getOrganizationJsonLd(locale, { includeUrl: hasPublicSiteUrl });
 ---
 
 <!doctype html>
@@ -26,13 +27,13 @@ const jsonLd = getOrganizationJsonLd(locale);
     <meta name="generator" content={Astro.generator} />
     <title>{meta.title}</title>
     <meta name="description" content={meta.description} />
-    <link rel="canonical" href={canonicalUrl(pathname)} />
+    {hasPublicSiteUrl && <link rel="canonical" href={canonicalUrl(pathname)} />}
     {alternates.map((alternate) => <link rel="alternate" hreflang={alternate.lang} href={alternate.href} />)}
-    <link rel="alternate" hreflang="x-default" href={canonicalUrl("/")} />
+    {hasPublicSiteUrl && <link rel="alternate" hreflang="x-default" href={canonicalUrl("/")} />}
     <meta property="og:type" content="website" />
     <meta property="og:title" content={meta.title} />
     <meta property="og:description" content={meta.description} />
-    <meta property="og:url" content={canonicalUrl(pathname)} />
+    {hasPublicSiteUrl && <meta property="og:url" content={canonicalUrl(pathname)} />}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" />
     <link rel="preload" href="/fonts/tbank/TinkoffSans-Regular.woff2" as="font" type="font/woff2" crossorigin />

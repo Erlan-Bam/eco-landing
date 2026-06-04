@@ -40,11 +40,17 @@ const metaKeys = {
   }
 };
 
-const resolveSiteUrl = () => {
+const normalizeSiteUrl = (url) => url.replace(/\/+$/, "");
+
+export const getConfiguredSiteUrl = () => {
   const envUrl = import.meta.env?.PUBLIC_SITE_URL ?? process.env.PUBLIC_SITE_URL;
 
-  return (envUrl || "http://localhost:4321").replace(/\/+$/, "");
+  return envUrl ? normalizeSiteUrl(envUrl) : "";
 };
+
+export const hasConfiguredSiteUrl = () => getConfiguredSiteUrl().length > 0;
+
+const resolveSiteUrl = () => getConfiguredSiteUrl() || "http://localhost:4321";
 
 const assertLocale = (locale) => {
   if (!routes[locale]) {
@@ -126,15 +132,15 @@ export const getWhatsAppUrl = (locale) => {
   return `${company.primaryPhone.whatsapp}?text=${encodeURIComponent(whatsappMessages[locale])}`;
 };
 
-export const getOrganizationJsonLd = (locale) => {
+export const getOrganizationJsonLd = (locale, options = {}) => {
   assertLocale(locale);
 
-  return {
+  const { includeUrl = true } = options;
+  const organization = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     name: company.legalName[locale],
     alternateName: company.brand[locale],
-    url: getSiteUrl(),
     telephone: company.primaryPhone.display,
     areaServed: "KZ",
     address: {
@@ -150,4 +156,10 @@ export const getOrganizationJsonLd = (locale) => {
       closes: company.scheduleStructured.closes
     }
   };
+
+  if (includeUrl) {
+    organization.url = getSiteUrl();
+  }
+
+  return organization;
 };

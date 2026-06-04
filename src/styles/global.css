@@ -523,7 +523,7 @@ h3 {
   margin-top: 1.25rem;
 }
 
-@media (max-width: 1060px) {
+@media (max-width: 1180px) {
   .desktop-nav,
   .header-actions {
     display: none;

@@ -6,11 +6,13 @@ import {
   canonicalUrl,
   formatPrice,
   getAlternateLinks,
+  getConfiguredSiteUrl,
   getOrganizationJsonLd,
   getPageMeta,
   getRoute,
   getSiteUrl,
   getWhatsAppUrl,
+  hasConfiguredSiteUrl,
   localizePath,
   pages
 } from "../src/utils/site.mjs";
@@ -19,9 +21,16 @@ const puo = services.find((service) => service.id === "puo");
 const szz = services.find((service) => service.id === "szz");
 const originalSiteUrl = process.env.PUBLIC_SITE_URL;
 
+delete process.env.PUBLIC_SITE_URL;
+assert.equal(hasConfiguredSiteUrl(), false);
+assert.equal(getConfiguredSiteUrl(), "");
 assert.equal(getSiteUrl(), "http://localhost:4321");
+
 process.env.PUBLIC_SITE_URL = "https://example.com///";
+assert.equal(hasConfiguredSiteUrl(), true);
+assert.equal(getConfiguredSiteUrl(), "https://example.com");
 assert.equal(getSiteUrl(), "https://example.com");
+
 if (originalSiteUrl === undefined) {
   delete process.env.PUBLIC_SITE_URL;
 } else {
@@ -67,6 +76,7 @@ assert.ok(whatsappKz.includes(encodeURIComponent("Сәлеметсіз бе! Э�
 
 const jsonLdRu = getOrganizationJsonLd("ru");
 const jsonLdKz = getOrganizationJsonLd("kz");
+const jsonLdWithoutUrl = getOrganizationJsonLd("ru", { includeUrl: false });
 
 assert.equal(jsonLdRu["@context"], "https://schema.org");
 assert.equal(jsonLdRu["@type"], "LocalBusiness");
@@ -88,5 +98,6 @@ assert.deepEqual(jsonLdRu.openingHoursSpecification, {
   closes: company.scheduleStructured.closes
 });
 assert.equal(jsonLdKz.address.addressCountry, "Қазақстан");
+assert.equal("url" in jsonLdWithoutUrl, false);
 
 console.log("verify:helpers PASS");
