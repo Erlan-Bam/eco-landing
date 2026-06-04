@@ -166,4 +166,14 @@ export const services = [
 
 export const featuredServiceIds = ["ppm", "puo", "hazardous-waste-passport", "pec-report", "pds-nds", "pdv"];
 
-export const featuredServices = featuredServiceIds.map((id) => services.find((service) => service.id === id));
+const findServiceById = (id) => {
+  const service = services.find((item) => item.id === id);
+
+  if (!service) {
+    throw new Error(`Unknown featured service ID: ${id}`);
+  }
+
+  return service;
+};
+
+export const featuredServices = featuredServiceIds.map(findServiceById);
