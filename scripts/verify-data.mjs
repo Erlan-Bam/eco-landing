@@ -6,6 +6,7 @@ import { content } from "../src/data/content.mjs";
 const serviceIds = new Set(services.map((service) => service.id));
 const categoryIds = new Set(serviceCategories.map((category) => category.id));
 const serializedData = JSON.stringify({ company, services, content });
+const getService = (id) => services.find((service) => service.id === id);
 
 const duplicateServiceIds = services
   .map((service) => service.id)
@@ -29,14 +30,23 @@ assert.equal(company.scheduleStructured.opens, "10:00");
 assert.equal(company.scheduleStructured.closes, "18:00");
 assert.equal(serviceIds.size, services.length, `Duplicate service IDs: ${duplicateServiceIds.join(", ")}`);
 
-for (const forbidden of ["Sunny", "Safina", "Сейфулина", "g.kezembayeva@gmail.com"]) {
+for (const forbidden of [
+  "Sunny",
+  "Safina",
+  "Сейфулина",
+  "g.kezembayeva@gmail.com",
+  "ПДВ",
+  "предельно-допустимых выбросов",
+  "ПДС",
+  "связанные материалы"
+]) {
   assert.doesNotMatch(serializedData, new RegExp(forbidden, "i"));
 }
 
 assert.doesNotMatch(serializedData, /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i, "Public email must not appear in site data");
 
 for (const requiredId of [
-  "pdv",
+  "ndv",
   "puo",
   "szz",
   "ovos",
@@ -51,15 +61,29 @@ for (const requiredId of [
   "2tp-water",
   "environmental-plan-report",
   "pollutant-register-report",
-  "4os-report"
+  "4os-report",
+  "nds"
 ]) {
   assert.ok(serviceIds.has(requiredId), `Missing required DOCX service: ${requiredId}`);
 }
 
-assert.equal(services.find((service) => service.id === "puo").price.amount, 30000);
-assert.equal(services.find((service) => service.id === "ppm").price.amount, 25000);
-assert.equal(services.find((service) => service.id === "szz").price.type, "request");
-assert.equal(services.find((service) => service.id === "roos").price.type, "request");
+assert.equal(getService("ndv").title.ru, "Разработка Проекта нормативов допустимых выбросов (НДВ)");
+assert.match(getService("ndv").summary.ru, /нормативов воздействия на окружающую среду/);
+assert.equal(getService("szz").title.ru, "Разработка Проекта санитарно-защитной зоны (СЗЗ)");
+assert.match(getService("szz").summary.ru, /санитарно-эпидемиологического благополучия населения/);
+assert.equal(getService("ovos").title.ru, "Разработка Проекта оценки воздействия на окружающую среду (ОВОС)");
+assert.match(getService("ovos").summary.ru, /выявления, анализа и оценки возможного воздействия/);
+assert.equal(getService("oovv").title.ru, "Разработка Отчета о возможных воздействиях (ОоВВ)");
+assert.match(getService("oovv").summary.ru, /экологических и социальных последствий реализации проекта/);
+assert.equal(getService("roos").title.ru, "Разработка Раздела охраны окружающей среды (РООС)");
+assert.match(getService("roos").summary.ru, /комплекса природоохранных мероприятий/);
+assert.equal(getService("nds").title.ru, "Разработка проекта нормативов допустимых сбросов (НДС)");
+assert.match(getService("nds").summary.ru, /сточными водами в водные объекты или системы водоотведения/);
+assert.equal(getService("puo").price.amount, 30000);
+assert.equal(getService("ppm").price.amount, 25000);
+assert.equal(getService("nds").price.amount, 80000);
+assert.equal(getService("szz").price.type, "request");
+assert.equal(getService("roos").price.type, "request");
 assert.equal(featuredServiceIds.length, 6);
 assert.equal(serviceCategories.length, 5);
 

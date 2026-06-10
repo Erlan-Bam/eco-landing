@@ -13,7 +13,16 @@ function readDist(path) {
 }
 
 function expectNoForbiddenText(path, html) {
-  for (const forbidden of ["Сейфулина", "Safina", "Sunny", "g.kezembayeva@gmail.com"]) {
+  for (const forbidden of [
+    "Сейфулина",
+    "Safina",
+    "Sunny",
+    "g.kezembayeva@gmail.com",
+    "ПДВ",
+    "предельно-допустимых выбросов",
+    "ПДС",
+    "связанные материалы"
+  ]) {
     assert.doesNotMatch(html, new RegExp(forbidden, "i"), `${path} contains forbidden text ${forbidden}`);
   }
 }
@@ -52,6 +61,17 @@ for (const expected of ["от 25 000 ₸", "от 30 000 ₸", "от 40 000 ₸",
   assert.match(servicesHtml, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 }
 
+for (const expected of [
+  "Разработка Проекта нормативов допустимых выбросов (НДВ)",
+  "Разработка Проекта санитарно-защитной зоны (СЗЗ)",
+  "Разработка Проекта оценки воздействия на окружающую среду (ОВОС)",
+  "Разработка Отчета о возможных воздействиях (ОоВВ)",
+  "Разработка Раздела охраны окружающей среды (РООС)",
+  "Разработка проекта нормативов допустимых сбросов (НДС)"
+]) {
+  assert.match(servicesHtml, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+}
+
 const servicesKzHtml = readDist("kz/services/index.html");
 for (const expected of ["25 000 ₸ бастап", "100 000 ₸ бастап", "Құны сұраныс бойынша"]) {
   assert.match(servicesKzHtml, new RegExp(expected.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
@@ -84,7 +104,10 @@ assert.match(robots, new RegExp(`Sitemap: ${publicOrigin.replace(/[.*+?^${}()|[\
 const llms = readDist("llms.txt");
 assert.match(llms, /Центр экологического мониторинга/);
 assert.match(llms, /Экологиялық мониторинг орталығы/);
-assert.match(llms, /ПДВ/);
+assert.match(llms, /НДВ/);
+assert.match(llms, /НДС/);
+assert.doesNotMatch(llms, /ПДВ/);
+assert.doesNotMatch(llms, /ПДС/);
 assert.match(llms, /77077924445/);
 assert.match(llms, /Стоимость по запросу/);
 
