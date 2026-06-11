@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 const root = process.cwd();
@@ -27,6 +27,23 @@ function expectNoForbiddenText(path, html) {
   }
 }
 
+function luminance(hexColor) {
+  const channels = hexColor
+    .replace("#", "")
+    .match(/../g)
+    .map((channel) => Number.parseInt(channel, 16) / 255)
+    .map((channel) => (channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4));
+
+  return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+}
+
+function contrastRatio(foreground, background) {
+  const foregroundLuminance = luminance(foreground);
+  const backgroundLuminance = luminance(background);
+
+  return (Math.max(foregroundLuminance, backgroundLuminance) + 0.05) / (Math.min(foregroundLuminance, backgroundLuminance) + 0.05);
+}
+
 const pages = [
   { path: "index.html", title: "Экологическая документация в Казахстане" },
   { path: "services/index.html", title: "Экологические услуги и цены" },
@@ -34,10 +51,24 @@ const pages = [
   { path: "kz/services/index.html", title: "Экологиялық қызметтер және бағалар" }
 ];
 
+const cssFiles = readdirSync(join(dist, "_astro")).filter((file) => file.endsWith(".css"));
+assert.ok(cssFiles.length > 0, "Missing generated CSS");
+
+const css = cssFiles.map((file) => readFileSync(join(dist, "_astro", file), "utf8")).join("\n");
+const primaryColor = css.match(/--color-primary:\s*(#[0-9a-f]{6})/i)?.[1];
+assert.ok(primaryColor, "Missing --color-primary token");
+assert.ok(
+  contrastRatio(primaryColor, "#ffffff") >= 4.5,
+  `Primary button color ${primaryColor} must pass AA contrast against white text`
+);
+
 for (const page of pages) {
   const html = readDist(page.path);
   assert.match(html, new RegExp(`<title>${page.title}`));
   assert.match(html, /<meta name="description" content="[^"]{50,}"/);
+  assert.match(html, /\/fonts\/tbank\/TinkoffSans-Regular\.woff2/);
+  assert.match(html, /\/fonts\/tbank\/TinkoffSans-Medium\.woff2/);
+  assert.match(html, /\/fonts\/tbank\/TinkoffSans-Bold\.woff2/);
   assert.match(html, /77077924445/);
   assert.match(html, /Жарокова|Жароков/);
   expectNoForbiddenText(page.path, html);
