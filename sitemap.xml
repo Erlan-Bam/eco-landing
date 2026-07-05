@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>http://localhost:4321/</loc>
+    <lastmod>2026-07-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="http://localhost:4321/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="http://localhost:4321/kz/" />
+  </url>
+  <url>
+    <loc>http://localhost:4321/kz/</loc>
+    <lastmod>2026-07-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="http://localhost:4321/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="http://localhost:4321/kz/" />
+  </url>
+  <url>
+    <loc>http://localhost:4321/services/</loc>
+    <lastmod>2026-07-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="http://localhost:4321/services/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="http://localhost:4321/kz/services/" />
+  </url>
+  <url>
+    <loc>http://localhost:4321/kz/services/</loc>
+    <lastmod>2026-07-05</lastmod>
+    <xhtml:link rel="alternate" hreflang="ru" href="http://localhost:4321/services/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="http://localhost:4321/kz/services/" />
+  </url>
+</urlset>
