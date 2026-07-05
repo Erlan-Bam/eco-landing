@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:4321/</loc>
+    <loc>https://ecomonitoring.kz/</loc>
     <lastmod>2026-07-05</lastmod>
-    <xhtml:link rel="alternate" hreflang="ru" href="http://localhost:4321/" />
-    <xhtml:link rel="alternate" hreflang="kk" href="http://localhost:4321/kz/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ecomonitoring.kz/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="https://ecomonitoring.kz/kz/" />
   </url>
   <url>
-    <loc>http://localhost:4321/kz/</loc>
+    <loc>https://ecomonitoring.kz/kz/</loc>
     <lastmod>2026-07-05</lastmod>
-    <xhtml:link rel="alternate" hreflang="ru" href="http://localhost:4321/" />
-    <xhtml:link rel="alternate" hreflang="kk" href="http://localhost:4321/kz/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ecomonitoring.kz/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="https://ecomonitoring.kz/kz/" />
   </url>
   <url>
-    <loc>http://localhost:4321/services/</loc>
+    <loc>https://ecomonitoring.kz/services/</loc>
     <lastmod>2026-07-05</lastmod>
-    <xhtml:link rel="alternate" hreflang="ru" href="http://localhost:4321/services/" />
-    <xhtml:link rel="alternate" hreflang="kk" href="http://localhost:4321/kz/services/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ecomonitoring.kz/services/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="https://ecomonitoring.kz/kz/services/" />
   </url>
   <url>
-    <loc>http://localhost:4321/kz/services/</loc>
+    <loc>https://ecomonitoring.kz/kz/services/</loc>
     <lastmod>2026-07-05</lastmod>
-    <xhtml:link rel="alternate" hreflang="ru" href="http://localhost:4321/services/" />
-    <xhtml:link rel="alternate" hreflang="kk" href="http://localhost:4321/kz/services/" />
+    <xhtml:link rel="alternate" hreflang="ru" href="https://ecomonitoring.kz/services/" />
+    <xhtml:link rel="alternate" hreflang="kk" href="https://ecomonitoring.kz/kz/services/" />
   </url>
 </urlset>
