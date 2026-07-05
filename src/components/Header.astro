@@ -31,7 +31,8 @@ const navItems = [
 <header class="site-header">
   <div class="container header-inner">
     <a class="wordmark" href={getRoute(locale, "home")} aria-label={company.brand[locale]}>
-      {company.brand[locale]}
+      <img class="wordmark-logo" src="/logo.png" alt="" width="42" height="42" loading="eager" decoding="async" />
+      <span class="wordmark-text">{company.brand[locale]}</span>
     </a>
 
     <nav class="desktop-nav" aria-label={locale === "kz" ? "Негізгі навигация" : "Основная навигация"}>

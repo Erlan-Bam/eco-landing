@@ -183,6 +183,9 @@ h3 {
 }
 
 .wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
   max-width: 260px;
   color: var(--color-forest);
   font-size: 1rem;
@@ -191,6 +194,17 @@ h3 {
   letter-spacing: 0;
   overflow-wrap: anywhere;
   text-decoration: none;
+}
+
+.wordmark-logo {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+}
+
+.wordmark-text {
+  display: block;
 }
 
 .nav-list {
@@ -312,6 +326,10 @@ h3 {
   border-top: 1px solid rgba(167, 243, 208, 0.7);
   background: #fff;
   padding: 2rem 0;
+}
+
+.site-footer .wordmark {
+  margin-bottom: 0.75rem;
 }
 
 .footer-grid {

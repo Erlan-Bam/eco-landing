@@ -29,7 +29,10 @@ const labels = locale === "kz"
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <a class="wordmark" href={getRoute(locale, "home")}>{company.brand[locale]}</a>
+      <a class="wordmark" href={getRoute(locale, "home")}>
+        <img class="wordmark-logo" src="/logo.png" alt="" width="42" height="42" loading="lazy" decoding="async" />
+        <span class="wordmark-text">{company.brand[locale]}</span>
+      </a>
       <p class="muted">{company.legalName[locale]}</p>
       <p class="muted">{labels.bin} {company.bin}</p>
     </div>
